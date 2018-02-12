@@ -1,6 +1,7 @@
 var global = {
-    scale: 1, 
+    scale: 10, 
     obj: [],
+    gameOver: false
 }; 
 function time() {
     return (new Date()).getTime() / 1000;
@@ -9,7 +10,9 @@ function time() {
 function makeRect(x, y, width, height, tex, notAdd) {
     var planeGeometry = new THREE.PlaneGeometry(width, height);
     var planeMaterial = new THREE.MeshBasicMaterial({
-        map: THREE.ImageUtils.loadTexture(tex)});
+        map: THREE.ImageUtils.loadTexture(tex),
+        transparent: true
+    });
     var plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.position.x = x;
     plane.position.y = y;
@@ -20,10 +23,11 @@ function makeRect(x, y, width, height, tex, notAdd) {
     return plane;
 }
 
-function makeCircle(x, y, radius, color) {
+function makeCircle(x, y, radius, tex) {
     var geometry = new THREE.CircleGeometry(radius, 36);
     var material = new THREE.MeshBasicMaterial({
-        map: THREE.ImageUtils.loadTexture("cby.png")
+        map: THREE.ImageUtils.loadTexture(tex),
+        transparent: true
     });
     var circle = new THREE.Mesh( geometry, material );
     circle.position.x = x;
@@ -40,20 +44,20 @@ function initScene(eid) {
 
     var e = $("#" + eid);
     var width = e.width();
-    var height = e.width();
+    var height = width * 9 / 8;
     global.width = width / global.scale;
     global.height = height / global.scale;
 
-    /*
     var camera = new THREE.OrthographicCamera(
-        -global.width / 2,
-        global.width / 2,
-        global.height / 2,
-        -global.height / 2,
+        -200 / global.scale,
+        200 / global.scale,
+        225 / global.scale,
+        -225 / global.scale,
         1,
         1000);
-    */
+    /*
     var camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000 );
+    */
 
     // create a render and set the size
     var renderer = new THREE.WebGLRenderer();
@@ -62,9 +66,10 @@ function initScene(eid) {
 
     // position and point the camera to the center of the scene
     camera.position.x = 0;
-    camera.position.y = 0;
-    camera.position.z = 40;
-    camera.lookAt(global.scene.position);
+    camera.position.y = -5;
+    camera.position.z = 50;
+    global.camera = camera;
+    //camera.lookAt(global.scene.position);
 
     // add the output of the renderer to the html element
     document.getElementById(eid).appendChild(renderer.domElement);

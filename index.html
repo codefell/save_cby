@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <!--meta http-equiv="ContentType" content="text/html;Charset=utf-8"-->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>愤怒的小媛媛</title>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+    <title>营救小美女</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" src="Box2D.js"></script>
     <script type="text/javascript" src="three.min.js"></script>
     <script type="text/javascript" src="scene.js"></script>
@@ -18,28 +18,69 @@
     <style>
         #WebGLoutput {
             width: 100%;
-            height: 100%;
+        }
+        #successDialog p {
+            color: #0F0;
+        }
+        #failedDialog p {
+            color: #F00;
+        }
+        #timeInfo {
+            position: absolute;
         }
     </style>
     <script>
-	setInterval(function () {
-		setJointMotor($("#slider").val() / 128);
-			}, 1000/60);
+    function popupSuccess() {
+        $("#popupSuccess").trigger("click");
+    }
+    function popupFailed() {
+        $("#popupFailed").trigger("click");
+    }
+    function popupMiss() {
+        $("#popupMiss").trigger("click");
+    }
     </script>
 </head>
 <body>
 
-<div data-role="page">
+<div data-role="page" data-fullscreen="true">
 
-<div data-role="header">
-<h1>愤怒的小媛媛</h1>
+<div data-theme='b' data-role="header">
+<a data-position-to="window" href="#myPopup" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-icon-info ui-btn-icon-left">说明</a>
+<h1>营救小美女</h1>
+<a href="javascript:location.reload();" class="ui-btn ui-corner-all ui-shadow ui-icon-refresh ui-btn-icon-left">重来</a>
 </div>
 
 <div data-role="content">
 <!-- Div which will hold the Output -->
 <div id="WebGLoutput">
+<div id="timeInfo">剩余时间：<span id="leftTime">5</span>秒</div>
 </div>
-<input type="range" name="slider" id="slider" value="20" min="-100" max="100" data-theme="a" data-track-theme="a">
+<input type="range" name="slider" id="slider" value="20" min="-100" max="100" data-theme="b" data-track-theme="b">
+
+ <a id="popupSuccess" data-position-to="window" style="display:none" href="#successDialog" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all"></a>
+<div data-role="popup" id="successDialog" data-theme="b" class="ui-content">
+<a href="#"  class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">关闭</a>
+<p>成功了，小美女安全到达城堡</p>
+</div>
+
+ <a id="popupFailed" data-position-to="window" style="display:none" href="#failedDialog" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all"></a>
+<div data-role="popup" id="failedDialog" data-theme="b" class="ui-content">
+<a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">关闭</a>
+<p>失败了，小美女被感染成了怪物</p>
+</div>
+
+ <a id="popupMiss" data-position-to="window" style="display:none" href="#missDialog" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all"></a>
+<div data-role="popup" id="missDialog" data-theme="b" class="ui-content">
+<a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">关闭</a>
+<p>糟糕，小美女被弄丢了</p>
+</div>
+
+ <div data-role="popup" id="myPopup" data-theme="b" class="ui-content">
+<a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">关闭</a>
+<p>滑动滑块，在还有时间的情况下，将愤怒的小美女从充满怪物的盒子救出去，送到安全城堡</p>
+</div>
+
 </div>
 
 <!--div data-role="footer">
